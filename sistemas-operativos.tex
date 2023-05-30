@@ -1,0 +1,124 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{Apuntes de Sistemas Operativos}
+\date{2023-05-30}
+\author{Daniel Araya Rom\'{a}n}
+
+\begin{document}
+\maketitle
+\newpage
+
+\section*{1. Introducci\'{o}n}
+\paragraph*{}
+\normalsize
+
+Un \textbf{sistema operativo} es un programa que administra el hardware de una computadora.
+Act\'{u}a como intermediario entre el usuario y el hardware. Un aspecto sorprendente de los 
+sistemas operativos es la gran variedad de formas en que llevan a cabo estas tareas. Los 
+sistemas operativos \textit{mainframe} est\'{a}n dise\~{n}ados para optimizar el uso del hardware.
+Algunos est\'{a}n dise\~{n}ados para ser pr\'{a}cticos, otros para ser eficientes y otros para ser
+ambas cosas. Antes de adentrarnos en los detalles de los sistemas operativos, es importante
+entender acerca de la estructura del sistema. Dado que un sistema operativo es un software grande
+y complejo, debe crearse pieza por pieza. En este cap\'{i}tulo se describe los principales componentes
+de un sistema operativo.
+
+\subsection*{1.1 Qu\'{e} hace un sistema operativo?}
+Un sistema operativo es un sistema inform\'{a}tico que puede dividirse en cuatro componentes:
+\textit{hardware, sistema operativo, programas de aplicaci\'{o}n y usuarios}.
+
+El \textbf{hardware}, la \textbf{unidad central de procesamiento} (CPU), la \textbf{memoria} y los
+\textbf{dispositivos de entrada/salida} (E/S), proporcionan los recursos b\'{a}sicos de c\'{o}mputo
+al sistema. Los \textbf{programas de aplicaci\'{o}n}, como los procesadores de texto, las hojas de
+c\'{a}lculo, los compiladores y los navegadores web, definen las formas en que estos recursos se
+emplean para resolver los problemas inform\'{a}ticos de los usuarios. 
+
+\begin{center}
+    \textbf{Analog\'{i}a} \\
+    Sistema operativo $\rightarrow$ Gobierno $\rightarrow$ Entorno de programas $\rightarrow$ 
+    Trabajo \'{u}til 
+\end{center}
+
+\subsubsection*{1.1.1 Punto de vista del usuario}
+La mayor\'{i}a de usuarios disponen de un monitor, teclado, un rat\'{o}n, una unidad de sistema.
+Un sistema as\'{i} se dise\~{n}a para que el usuario \textbf{monopolice} sus recursos. El objetivo
+es maximizar el trabajo que el usuario realice. En este caso tiene que dise\~{n}arse para que sea
+de f\'{a}cil uso.
+
+En otros casos, un usuario se sienta en frente a un terminal conectado a un \textbf{mainframe} o una
+\textbf{microcomputadora}. Otros usuarios acceden simult\'{a}neamente a trav\'{e}s de otros terminales.
+Estos usuarios comparten recursos y pueden intercambiar informaci\'{o}n. En tal caso, el sistema operativo
+se dise\~{n}a para maximizar la utilizaci\'{o}n de recursos, de modo que cada usuario disponga s\'{o}lo de 
+una parte equitativa que le corresponde.
+
+En otros casos, los usuarios usan \textbf{estaciones de trabajo} conectadas a redes de otras estaciones de
+trabajo y servidores. Los usuarios tienen recursos dedicados, pero tambi\'{e}n tienen recursos compartidos
+como la red y los servidores. Por tanto su sistema operativo est\'{a} dise\~{n}ado para llegar a un compromiso
+entre la usabilidad individual y la utilizaci\'{o}n de recursos.
+
+\subsubsection*{1.1.2 Vista del sistema}
+El sistema operativo es el programa m\'{a}s \'{i}ntimamente relacionado con el hardware. Podemos ver al sistema
+operativo como un \textbf{asignador de recursos}. El sistema operativo \textbf{act\'{u}a} como el administrador
+de estos recursos. Al enfrentarse a numerosas y posibles conflictivas solicitudes de recursos, el sistema operativo
+debe de decidir c\'{o}mo asignarlos a programas y usuarios espec\'{i}ficos, de modo que el computador opere de manera
+eficiente y equitativa.
+
+Un punto de vista que difiere al sistema operativo, hace hincapi\'{e} en la necesidad de controlar dispositivos de 
+E/S y programas de usuario. Un sistema operativo es un \textbf{programa de control}.
+
+\subsubsection*{1.1.3 Definici\'{o}n de sistemas operativos}
+No hay una definici\'{o}n de sistema operativo que sea completamente adecuada. Estos existen porque ofrecen una forma
+razonable de resolver el problema de crear un sistema inform\'{a}tico utilizable. El \textbf{objetivo principal} de
+las computadoras es \textbf{ejecutar} programas de usuario y resolver problemas del mismo f\'{a}cilmente. Con este
+objetivo se construye el hardware de la computadora. Ya que el hardware no es f\'{a}cil de usar, se desarrollaron 
+programas de aplicaci\'{o}n. Estos programas requieren operacaiones comunes, y estas se incorporan en una pieza de software
+que es el sistema operativo.
+
+Adem\'{a}s, no hay ninguna definici\'{o}n universalmente aceptada sobre qu\'{e} forma parte de un sistema operativo. Las
+caracter\'{i}sticas var\'{i}an de un sistema a otro. Algunos sistemas operativos ocupan 1 megabyte de espacio y
+no proporcionan ni un editor a pantalla completa, mientras que otros necesitan gigabytes de espacio y est\'{a}n
+completamente basados en sistemas gr\'{a}ficos de ventanas.
+\medbreak
+
+\begin{center}
+    \textbf{Unidades de medidad} 
+\end{center}
+\begin{align*}
+    1 \text{ bit} &= 0 \text{ or } 1 \\ 
+    1 \text{ byte} &= 8 \text{ bits} \\ 
+    1 \text{ kilobyte} &= 1024^1 \text{ bytes} \\ 
+    1 \text{ megabyte} &= 1024^2 \text{ bytes} \\ 
+    1 \text{ gigabyte} &= 1024^3 \text{ bytes}
+\end{align*}
+
+Otra definici\'{o}n com\'{u}n es que un sistema operativo es aquel programa que se ejecuta continuamente en la
+computadora (usualemente denominado \textbf{\textit{kernel}}), siendo todo lo dem\'{a}s programas del sistema y
+programas de aplicaci\'{o}n.
+
+\subsection*{1.2 Organizaci\'{o}n de una computadora}
+Antes de entender como funciona una computadora, debemos entender su \textbf{estructura}.
+
+\subsubsection*{1.2.1 Funcionamiento de una computadora}
+Una computadora moderna de prop\'{o}sito general consta de una o m\'{a}s CPU y una serie de controladoras de dispositivo
+conetadas a trav\'{e}s de un \textbf{bus com\'{u}n} que proporciona acceso a la \textbf{memoria compartida}. Cada controladora
+de dispositivo se encarga de un tipo espec\'{i}fico de dispositivo, por ejemplo, unidades de disco, dispositivos de audio y  pantallas
+de video. 
+
+La CPU y estas controladoras pueden funcionar de forma concurrente, compitiendo por los ciclos de memoria. Para asegurar
+el acceso de forma ordenada a la memoria compartida, se proporciona una controladora de memoria cuya funci\'{o}n es \textbf{sincronizar}
+el acceso a la misma.
+
+Para que una computadora empiece a funcionar, es necesario que tenga un programa de inicio de ejecutar. Este \textbf{programa de arranque}
+suele ser simple. Normalmente se almacena en la memoria \textbf{ROM (read-only memory)} o en una memoria 
+\textbf{EEPROM (electrically erasable programmable read-only memory)}; conocida con el t\'{e}rmino general de \textbf{firmware}.
+El programa de arranque debe saber c\'{o}mo cargar el sistema operativo e iniciar la ejecuci\'{o}n del mismo. Para esto debe localizar
+y cargar en memoria el kernel (n\'{u}cleo) del sistema operativo. Despu\'{e}s, el sistema operativo comienza ejecutando el 
+\textbf{primer proceso}, como por ejemplo \textit{init} y espera a que se produzca alg\'{u}n suceso.
+
+La ocurrencia de un suceso normalmente se indica mediante una \textbf{interrupci\'{o}n}, bien del hardware o software. El hardware
+puede activar una interrupci\'{o}n en cualquier instante enviando una se\~{n}al a la CPU, normalmente a trav\'{e}s del bus del
+sistema. El software puede activar una interrupci\'{o}n mediante una operaci\'{o}n especial llamada de \textbf{llamada al sistema}.
+
+
+
+\end{document}
