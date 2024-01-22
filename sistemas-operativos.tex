@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage[a4paper, hmargin=1in,vmargin=1in]{geometry}
+\usepackage[edges]{forest}
 
 \title{Apuntes de Sistemas Operativos}
 \date{2023-05-30}
@@ -26,7 +28,6 @@ de un sistema operativo.
 \subsection*{1.1 Qu\'{e} hace un sistema operativo?}
 Un sistema operativo es un sistema inform\'{a}tico que puede dividirse en cuatro componentes:
 \textit{hardware, sistema operativo, programas de aplicaci\'{o}n y usuarios}.
-
 El \textbf{hardware}, la \textbf{unidad central de procesamiento} (CPU), la \textbf{memoria} y los
 \textbf{dispositivos de entrada/salida} (E/S), proporcionan los recursos b\'{a}sicos de c\'{o}mputo
 al sistema. Los \textbf{programas de aplicaci\'{o}n}, como los procesadores de texto, las hojas de
@@ -62,7 +63,6 @@ operativo como un \textbf{asignador de recursos}. El sistema operativo \textbf{a
 de estos recursos. Al enfrentarse a numerosas y posibles conflictivas solicitudes de recursos, el sistema operativo
 debe de decidir c\'{o}mo asignarlos a programas y usuarios espec\'{i}ficos, de modo que el computador opere de manera
 eficiente y equitativa.
-
 Un punto de vista que difiere al sistema operativo, hace hincapi\'{e} en la necesidad de controlar dispositivos de 
 E/S y programas de usuario. Un sistema operativo es un \textbf{programa de control}.
 
@@ -73,7 +73,6 @@ las computadoras es \textbf{ejecutar} programas de usuario y resolver problemas 
 objetivo se construye el hardware de la computadora. Ya que el hardware no es f\'{a}cil de usar, se desarrollaron 
 programas de aplicaci\'{o}n. Estos programas requieren operacaiones comunes, y estas se incorporan en una pieza de software
 que es el sistema operativo.
-
 Adem\'{a}s, no hay ninguna definici\'{o}n universalmente aceptada sobre qu\'{e} forma parte de un sistema operativo. Las
 caracter\'{i}sticas var\'{i}an de un sistema a otro. Algunos sistemas operativos ocupan 1 megabyte de espacio y
 no proporcionan ni un editor a pantalla completa, mientras que otros necesitan gigabytes de espacio y est\'{a}n
@@ -103,7 +102,6 @@ Una computadora moderna de prop\'{o}sito general consta de una o m\'{a}s CPU y u
 conetadas a trav\'{e}s de un \textbf{bus com\'{u}n} que proporciona acceso a la \textbf{memoria compartida}. Cada controladora
 de dispositivo se encarga de un tipo espec\'{i}fico de dispositivo, por ejemplo, unidades de disco, dispositivos de audio y  pantallas
 de video. 
-
 La CPU y estas controladoras pueden funcionar de forma concurrente, compitiendo por los ciclos de memoria. Para asegurar
 el acceso de forma ordenada a la memoria compartida, se proporciona una controladora de memoria cuya funci\'{o}n es \textbf{sincronizar}
 el acceso a la misma.
@@ -118,7 +116,77 @@ y cargar en memoria el kernel (n\'{u}cleo) del sistema operativo. Despu\'{e}s, e
 La ocurrencia de un suceso normalmente se indica mediante una \textbf{interrupci\'{o}n}, bien del hardware o software. El hardware
 puede activar una interrupci\'{o}n en cualquier instante enviando una se\~{n}al a la CPU, normalmente a trav\'{e}s del bus del
 sistema. El software puede activar una interrupci\'{o}n mediante una operaci\'{o}n especial llamada de \textbf{llamada al sistema}.
+Cuando la CPU se interrumpe, deja lo que est\'{a} haciendo e inmediatamente transfiere la
+ejecuci\'{o}n a una posici\'{o}n fijada. Normalmente contiene la direcci\'{o}n de inicio
+donde se encuentra la rutina de servicio a la interrupci\'{o}n. Luego de ejecutar esta rutina
+la CPU reanuda la operaci\'{o}n que estuviera haciendo.
 
+El m\'{e}todo m\'{a}s simple para tratar la transferencia consiste en invocar una rutina
+gen\'{e}rica para examinar la informaci\'{o}n de la interrupci\'{o}n. Sin embargo estas
+interrupciones deben de tratarse r\'{a}pidamente, y este procedimiento es algo lento. 
+Solamente solo es posible un n\'{u}mero predefinido de interrupciones; o usar otro sistema
+consistente en disponer una tabla de punteros a las rutinas de interrupci\'{o}n. Proporcionando
+la velocidad necesaria, de forma indirecta se llama a trav\'{e}s de la tabla. Sin necesidad
+de una rutina intermedia, generalmente la tabla de punteros se almacena en una posici\'{o}n
+inferior de la memoria. Este \textbf{vector de interrupciones}, se indexa mediante un n\'{u}mero 
+un\'{i}co que se proporciona con la solicitud de interrupci\'{o}n, para obtener la
+direcci\'{o}n de la rutina de servicio a la interrupci\'{o}n para el dispositivo correspondiente.
+Sistemas operativos tan diferentes como \textbf{Windows y UNIX} manejan las interrupciones
+de esta forma.
+
+Esta arquitectura debe de almacenar la direcci\'{o}n de la instrucci\'{o}n interrumpida.
+Las arquitectuas m\'{a}s recientes almacenan la direcci\'{o}n de retorno en la \textbf{pila del
+sistema}. Si la rutina e interrupci\'{o}n necesita modificar el estado del procesador,
+debe guardar expl\'{i}citamente el estado actual y luego restaurar dicho estado antes
+de volver. Despu\'{e}s la direcci\'{o}n de retorno guardada se carga en el contador de
+programa y la ejecuci\'{o}n contin\'{u}a como si nada hubiera pasado.
+
+\subsection*{1.2.2 Estructura de almacenamiento}
+Los programas de una computadora deben hallarse en la memoria principal (memoria \textbf{RAM}),
+\textit{random-access memory}, para ser ejecutados. El procesador puede acceder directamente.
+Habitualmente, se implementa con una tecnolog\'{i}a de semiconductores denominada \textbf{DRAM 
+(dynamic random-access memory)}, que forma una matriz de palabras de memoria. Cada palabra tiene
+su propia direcci\'{o}n, se interact\'{u}a a trav\'{e}s de una secuencia de carga (load) o 
+almacenamiento (store) de instrucciones en direcciones espec\'{i}ficas de memoria. La instrucci\'{o}n
+load mueve una palabra desde la memoria principal a un registro interno de la CPU, mientras
+que la instrucci\'{o}n store mueve una palabra desde el registro interno a la memoria principal.
+
+Un ciclo t\'{i}pico \textbf{instrucci\'{o}n-ejecuci\'{o}n}, cuando se ejecuta en un sistema de
+la arquitectura de \textbf{Von Neumann}, primero se extrae una instrucci\'{o}n de memoria y
+se almacena dicha instrucci\'{o}n en el \textbf{registro de instrucciones}. Continuamente la
+instrucci\'{o}n se decodifica y puede dar lugar a que se extraigan los operandos de la memoria
+y se almacenen en alg\'{u}n registro interno. Despu\'{e}s de ejecutar la instrucci\'{o}n con
+los operandos necesarios, el resultado se almacena de nuevo en memoria.
+
+Naturalmente la unidad de memoria solo ve un flujo de direcciones de memoria; no sabe c\'{o}mo
+se an generado o qu\'{e} son. Se puede ignorar c\'{o}mo genera un programa una direcci\'{o}n de
+memoria. Solo interesa la secuencia de direcciones de memoria generadas por el programa en ejecuci\'{o}n.
+Idealmente, es deseable que los programas y los datos residan en la memoria principal de
+forma permanente. Normalmente no es posible por dos razones:
+
+\begin{enumerate}
+    \item Normalmente, la memoria principa es demasiado peque\~{n}a para contener todos los
+    programas y datos necesarios de forma permanente.
+    \item La memoria principal es vol\'{a}til; pierde su contenido cuando se le quita la alimentaci\'{o}n.
+\end{enumerate}
+
+Por tanto la mayor parte de los sistemas inform\'{a}ticos requieren de almacenamiento secundario,
+como una extensi\'{o}n de la memoria principal. Este puede almacenar grandes cantidades de datos
+de manera permanente.
+El dispositivo de almacenamiento secundario m\'{a}s com\'{u}n es el \textbf{disco magn\'{e}tico},
+proporcionando un sistema de almacenamiento tanto para programas como para datos. La mayor\'{i}a
+de los programas se almacenan en un disco hasta que se cargan en memoria. Por lo que una apropiada
+administraci\'{o}n del almacenamiento en disco es de importancia crucial en un sistema inform\'{a}tico
+como se puede ver en el \textit{cap\'{i}tulo 12}.
+
+No obstante, en un sentido amplio, la estructura de almacenamiento consta de registros, memoria principal,
+y discos magn\'{e}ticos, solo es uno de los muchos sistemas de almacenamiento. Otros sistemas pueden
+incluir memoria cach\'{e}, CD-ROM, cintas magn\'{e}ticas, etc. Cada sistema proporciona las funciones
+b\'{a}sicas para guardar datos y mantenerlos hasta que estos sean recuperados en un instante posterior.
+Las principales diferencias entre los sistemas de almacenamiento son la \textbf{velocidad}, el
+\textbf{coste}, el \textbf{tama\~{n}o} y la \textbf{volatilidad}.
+
+\subsection*{1.2.3 Estructura de E/S}
 
 
 \end{document}
